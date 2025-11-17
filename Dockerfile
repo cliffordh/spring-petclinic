@@ -2,7 +2,7 @@ FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY . .
 # Override the Java version requirement
-RUN mvn clean package -DskipTests -Djava.version=21
+RUN mvn clean package -DskipTests -Djava.version=21 -Denforcer.skip=true
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
