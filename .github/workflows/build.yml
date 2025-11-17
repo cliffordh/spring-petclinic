@@ -2,7 +2,7 @@ name: Build and Push to JFrog
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -21,14 +21,14 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -DskipTests
     
-    - name: Log in to JFrog
+    - name: Log in to Docker Registry
       uses: docker/login-action@v2
       with:
-        registry: ${{ secrets.JFROG_REGISTRY }}
+        registry: clifford.jfrog.io
         username: ${{ secrets.JFROG_USERNAME }}
-        password: ${{ secrets.JFROG_PASSWORD }}
+        password: ${{ secrets.JFROG_API_TOKEN }}
     
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.JFROG_REGISTRY }}/petclinic:latest .
-        docker push ${{ secrets.JFROG_REGISTRY }}/petclinic:latest
+        docker build -t clifford.jfrog.io/petclinic-docker/spring-petclinic:latest .
+        docker push clifford.jfrog.io/petclinic-docker/spring-petclinic:latest
